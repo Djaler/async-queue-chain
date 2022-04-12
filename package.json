@@ -1,0 +1,61 @@
+{
+  "name": "async-queue-chain",
+  "version": "1.0.0",
+  "author": "Kirill Romanov",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Djaler/async-queue-chain"
+  },
+  "keywords": [
+    "async",
+    "queue"
+  ],
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "check-es6": "es-check es2017 dist/index.js",
+    "check-treeshake": "agadoo dist/index.mjs",
+    "build": "vite build",
+    "postbuild": "npm run check-es6 && npm run check-treeshake",
+    "prerelease": "npm run lint && npm run test && npm run build",
+    "release": "standard-version --preset @djaler/standard",
+    "release:github": "conventional-github-releaser --preset @djaler/standard",
+    "publish": "clean-publish"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "packageManager": "pnpm@6.32.4",
+  "devDependencies": {
+    "@djaler/conventional-changelog-standard": "1.2.0",
+    "@djaler/eslint-config-typescript": "0.0.7",
+    "agadoo": "2.0.0",
+    "clean-publish": "4.0.0",
+    "conventional-github-releaser": "3.1.5",
+    "es-check": "6.2.1",
+    "eslint": "7.32.0",
+    "eslint-import-resolver-typescript": "2.7.1",
+    "nano-staged": "0.6.0",
+    "simple-git-hooks": "2.7.0",
+    "simple-promise-mock": "^1.0.0",
+    "standard-version": "9.3.2",
+    "typescript": "4.6.3",
+    "vite": "2.9.1",
+    "vite-plugin-dts": "1.0.5",
+    "vitest": "0.9.3"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "./node_modules/.bin/simple-git-hooks && ./node_modules/.bin/nano-staged"
+  },
+  "nano-staged": {
+    "*.{js,ts}": "eslint --fix"
+  }
+}
