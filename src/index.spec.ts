@@ -48,6 +48,17 @@ it('should remove tasks from queue', async () => {
     expect(second).toHaveBeenCalledTimes(1);
 });
 
+it('should run tasks sequentially', async () => {
+    const first = vitest.fn();
+    const second = vitest.fn();
+    const queue = createAsyncQueue();
+    queue.add(first, second);
+
+    await queue.run(0);
+
+    expect(first.mock.invocationCallOrder[0]).toBeLessThan(second.mock.invocationCallOrder[0]);
+});
+
 it('should not run already running queue', () => {
     const first: VitestFn<Task> = vitest.fn();
     first.mockReturnValueOnce(createPromiseMock());
