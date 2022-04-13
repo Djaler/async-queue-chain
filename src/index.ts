@@ -1,16 +1,22 @@
 type ChainTask<T> = (previousResult: T) => Promise<T>;
 
-export function createAsyncQueue<T>() {
+export interface AsyncQueue<T> {
+    add(...tasks: Array<ChainTask<T>>): AsyncQueue<T>;
+
+    run(input: T): Promise<T>;
+}
+
+export function createAsyncQueue<T>(): AsyncQueue<T> {
     const queue: Array<ChainTask<T>> = [];
 
     let queuePromise: Promise<T> | null = null;
 
     return {
-        add(...tasks: Array<ChainTask<T>>) {
+        add(...tasks) {
             queue.push(...tasks);
             return this;
         },
-        async run(input: T) {
+        async run(input) {
             if (queuePromise) {
                 return queuePromise;
             }
