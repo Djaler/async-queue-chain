@@ -1,11 +1,7 @@
 import { createPromiseMock } from 'simple-promise-mock';
-import { expect, it, SpyInstanceFn, vitest } from 'vitest';
+import { expect, it, vitest } from 'vitest';
 
 import { createAsyncQueue } from './index';
-
-type VitestFn<T> = T extends ((...args: infer A) => infer R) ? SpyInstanceFn<A, R> : never;
-
-type Task = (value: number) => Promise<number>;
 
 it('should return tasks queue result', async () => {
     const first = (input: number) => Promise.resolve(input + 1);
@@ -20,8 +16,8 @@ it('should return tasks queue result', async () => {
 });
 
 it('should work when tasks added to running queue', async () => {
-    const first = vitest.fn();
-    const firstPromise = createPromiseMock();
+    const first = vitest.fn<[number], Promise<number>>();
+    const firstPromise = createPromiseMock<number>();
     first.mockReturnValueOnce(firstPromise);
     const second = (input: number) => Promise.resolve(input + 2);
     const queue = createAsyncQueue<number>();
@@ -41,8 +37,8 @@ it('should remove tasks from queue', async () => {
     const queue = createAsyncQueue();
     queue.add(first, second);
 
-    await queue.run(0);
-    await queue.run(1);
+    await queue.run();
+    await queue.run();
 
     expect(first).toHaveBeenCalledTimes(1);
     expect(second).toHaveBeenCalledTimes(1);
@@ -54,20 +50,20 @@ it('should run tasks sequentially', async () => {
     const queue = createAsyncQueue();
     queue.add(first, second);
 
-    await queue.run(0);
+    await queue.run();
 
     expect(first.mock.invocationCallOrder[0]).toBeLessThan(second.mock.invocationCallOrder[0]);
 });
 
 it('should not run already running queue', () => {
-    const first: VitestFn<Task> = vitest.fn();
+    const first = vitest.fn();
     first.mockReturnValueOnce(createPromiseMock());
-    const second: VitestFn<Task> = vitest.fn();
-    const queue = createAsyncQueue<number>();
+    const second = vitest.fn();
+    const queue = createAsyncQueue();
     queue.add(first, second);
 
-    void queue.run(0);
-    void queue.run(1);
+    void queue.run();
+    void queue.run();
 
     expect(first).toHaveBeenCalledTimes(1);
     expect(second).toHaveBeenCalledTimes(0);
