@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/Djaler/async-queue-chain/compare/v1.0.0...v1.0.1) (2022-04-13)
+
+
+### Improvements
+
+* add AsyncQueue type ([f879827](https://github.com/Djaler/async-queue-chain/commit/f879827fca6afa039688624ba0c797aa206e35b6))
+
 ## 1.0.0 (2022-04-12)
 
 
