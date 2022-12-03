@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/Djaler/async-queue-chain/compare/v1.0.2...v1.1.0) (2022-12-03)
+
+
+### Features
+
+* add a way to wait for queue end ([b43b573](https://github.com/Djaler/async-queue-chain/commit/b43b57342b23b044e318de66cc4c5b94f2ee96ae))
+
 ### [1.0.2](https://github.com/Djaler/async-queue-chain/compare/v1.0.1...v1.0.2) (2022-04-13)
 
 
