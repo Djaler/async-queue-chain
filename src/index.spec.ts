@@ -68,3 +68,17 @@ it('should not run already running queue', () => {
     expect(first).toHaveBeenCalledTimes(1);
     expect(second).toHaveBeenCalledTimes(0);
 });
+
+it('should allow to wait for queue end', async () => {
+    const first = vitest.fn().mockReturnValueOnce(undefined);
+    const second = vitest.fn();
+    const queue = createAsyncQueue();
+    let queueRunFinished = false;
+    void queue.add(first, second).run().then(() => {
+        queueRunFinished = true;
+    });
+
+    await queue.waitForFinish();
+
+    expect(queueRunFinished).toBe(true);
+});

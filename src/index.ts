@@ -4,6 +4,8 @@ export interface AsyncQueue<T = void> {
     add(...tasks: Array<ChainTask<T>>): AsyncQueue<T>;
 
     run(input: T): Promise<T>;
+
+    waitForFinish(): Promise<void>;
 }
 
 export function createAsyncQueue<T = void>(): AsyncQueue<T> {
@@ -45,6 +47,11 @@ export function createAsyncQueue<T = void>(): AsyncQueue<T> {
                 throw e;
             } finally {
                 queuePromise = null;
+            }
+        },
+        async waitForFinish() {
+            if (queuePromise) {
+                await queuePromise;
             }
         },
     };
